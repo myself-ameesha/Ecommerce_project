@@ -1,0 +1,242 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+
+
+    <!-- Breadcrumb Begin -->
+    <div class="breadcrumb-option pb-3">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="breadcrumb__links">
+                        <a href="./index.html"><i class="fa fa-home"></i> Home</a>
+                        <span>Shopping cart</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Breadcrumb End -->
+
+    <!-- Checkout Section Begin -->
+    {% if error_message %}
+    <div class="alert alert-danger">
+        {{ error_message }}
+    </div>
+    {% endif %}
+    <section class="checkout spad">
+        <div class="container">
+            <form action="{% url 'place_order' %}" class="checkout__form" method="post">
+                {% csrf_token %}
+                <div class="row">
+                    <aside class="col-lg-6">
+                        <div class="card">
+                          <div class="card-body">
+                            <h4 class="card-title mb-4">Choose Billing Address</h4>
+                            <form action="{% url 'place_order' %}" method="POST">
+                              {% csrf_token %}
+                              
+                    
+                
+                            {% if addresses %}
+                            <ul>
+                              <select name="selected_address" class="form-control">
+                                <option value="">Select Address</option>
+                                {% for address in addresses %}
+                                <option value="{{ address.id }}">{{ address.street_address }}, {{ address.city }}, {{ address.state }},
+                                  {{ address.country }}</option>
+                                {% endfor %}
+                              </select>             
+                            </ul>
+                
+                            {% else %}
+                            <p>No addresses found.</p>
+                            {% endif %}
+                          <div class="mt-3 pt-5" style="display: inline-block;">
+                            <a href="{% url 'add_address' %}" class="btn btn-primary">Add Address</a>
+                          </div>
+                          <br>
+                          <br>
+                           <!-- Coupon Form -->
+                           <div class="form-group mt-3 ">
+                            <label for="coupon_code">Enter Coupon Code:</label>
+                            <input type="text" class="form-control" id="coupon_code_input" name="coupon_code">
+                        </div>
+
+                       <div class="pt-5 text-center">
+                    <button type="submit" name="submit" class="site-btn ">Place oder</button>
+                </div>
+                  <div class="cart__btn pt-3 text-center">
+                    <a href="{% url 'store' %}">Continue Shopping</a>
+                </div>
+                              <br>
+                              <br>
+                          
+                           </form>
+                        </div>
+                
+                    </div> <!-- card.// -->
+                    </aside> <!-- col.// -->
+
+                
+                        <div class="col-lg-4">
+                            <div class="checkout__order">
+                                <h5>Your order</h5>
+                                <div class="checkout__order__product">
+                                    <table>
+                                        <thead>
+                                            <tr class="hd">
+                                                <th>Product</th>
+                                                <th class="pl-4">Quantity</th>
+                                                <th class="pl-4">Price</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody> 
+                                            {% for cart_item in cart_items %}
+                                            <tr>
+                                                <td class="cart__product__item">
+                                                    <img class="ctimg" src="{{ cart_item.product.image.first.image.url }}" alt="">
+                                                    <div class="cart__product__item__title txtfnt pb-3">
+                                                        <a href="{{ cart_item.product.get_url }}" class="title text-dark">{{cart_item.product.product_name}}</a>
+                                                        <br>
+                                                        {% if cart_item.variations.all %}
+                                                        {% for variation in cart_item.variations.all %}
+                                                        {{ variation.variation_category | capfirst}} : {{variation.variation_value | capfirst}}<br>
+                                                        {% endfor %}
+                                                        {% endif %}
+                                                    </div>
+                                                </td>
+                                                <td>                                       
+                                                    <div class="col"> 
+                                                        <div class="input-group input-spinner">
+                                                            <label class="pl-5" for="">{{cart_item.quantity}}</label>
+                                                            <div class="input-group-append">
+                                                                {% for item in cart_item_variations.all %}
+                                                                <input type="hidden" name="{{ item.variation_category | lower }}" value="{{ item.variation_value | capfirst }}">
+                                                                {% endfor %}
+                                                        </div>
+                                                        </div> 
+                                                    </div> 
+                                             </td>
+                                                <td class="cart__price pl-4">{{ cart_item.product.price }}</td>
+                                                 <!-- <td> 
+                                                <div class="price-wrap subtotal_prize"> 
+                                                    <dd class="subdd">{{cart_item.sub_total}}</dd>  
+                                                </div>  
+                                            </td> -->
+                                            </tr>
+                                            {% endfor %} 
+                                           
+                                        </tbody>
+                                    </table>
+                                </div>
+                        </div>
+                        </div>
+
+                    </div>
+                </form>
+            </div>
+        </section>
+        <!-- Checkout Section End -->
+
+
+        <!-- Footer Section Begin -->
+        <footer class="footer">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-4 col-md-6 col-sm-7">
+                        <div class="footer__about">
+                            <div class="footer__logo">
+                                <a href="./index.html"><img src="{% static 'img/logo.png' %} " alt=""></a>
+                            </div>
+                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt
+                            cilisis.</p>
+                            <div class="footer__payment">
+                                <a href="#"><img src="{% static 'img/payment/payment-1.png' %}" alt=""></a>
+                                <a href="#"><img src="{% static 'img/payment/payment-2.png' %}" alt=""></a>
+                                <a href="#"><img src="{% static 'img/payment/payment-3.png' %}" alt=""></a>
+                                <a href="#"><img src="{% static 'img/payment/payment-4.png' %}" alt=""></a>
+                                <a href="#"><img src="{% static 'img/payment/payment-5.png' %}" alt=""></a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-2 col-md-3 col-sm-5">
+                        <div class="footer__widget">
+                            <h6>Quick links</h6>
+                            <ul>
+                                <li><a href="#">About</a></li>
+                                <li><a href="#">Blogs</a></li>
+                                <li><a href="#">Contact</a></li>
+                                <li><a href="#">FAQ</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-lg-2 col-md-3 col-sm-4">
+                        <div class="footer__widget">
+                            <h6>Account</h6>
+                            <ul>
+                                <li><a href="#">My Account</a></li>
+                                <li><a href="#">Orders Tracking</a></li>
+                                <li><a href="#">Checkout</a></li>
+                                <li><a href="#">Wishlist</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 col-md-8 col-sm-8">
+                        <div class="footer__newslatter">
+                            <h6>NEWSLETTER</h6>
+                            <form action="#">
+                                <input type="text" placeholder="Email">
+                                <button type="submit" class="site-btn">Subscribe</button>
+                            </form>
+                            <div class="footer__social">
+                                <a href="#"><i class="fa fa-facebook"></i></a>
+                                <a href="#"><i class="fa fa-twitter"></i></a>
+                                <a href="#"><i class="fa fa-youtube-play"></i></a>
+                                <a href="#"><i class="fa fa-instagram"></i></a>
+                                <a href="#"><i class="fa fa-pinterest"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-12">
+                        <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+                        <div class="footer__copyright__text">
+                            <p>Copyright &copy; <script>document.write(new Date().getFullYear());</script> All rights reserved | This template is made with <i class="fa fa-heart" aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank">Colorlib</a></p>
+                        </div>
+                        <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+                    </div>
+                </div>
+            </div>
+        </footer>
+        <!-- Footer Section End -->
+
+        <!-- Search Begin -->
+        <div class="search-model">
+            <div class="h-100 d-flex align-items-center justify-content-center">
+                <div class="search-close-switch">+</div>
+                <form class="search-model-form">
+                    <input type="text" id="search-input" placeholder="Search here.....">
+                </form>
+            </div>
+        </div>
+        <!-- Search End -->
+
+        <!-- Js Plugins -->
+        <script src="{%static 'js/jquery-3.3.1.min.js' %}"></script>
+        <script src="{%static 'js/bootstrap.min.js' %}"></script>
+        <script src="{%static 'js/jquery.magnific-popup.min.js' %}"></script>
+        <script src="{%static 'js/jquery-ui.min.js' %}" ></script>
+        <script src="{%static 'js/mixitup.min.js' %}"></script>
+        <script src="{%static 'js/jquery.countdown.min.js' %}"></script>
+        <script src="{%static 'js/jquery.slicknav.js' %}"></script>
+        <script src="{%static 'js/owl.carousel.min.js' %}"></script>
+        <script src="{%static 'js/jquery.nicescroll.min.js' %}"></script>
+        <script src="{%static 'js/main.js' %}"></script>
+
+        {% endblock content %}
+
+
+        

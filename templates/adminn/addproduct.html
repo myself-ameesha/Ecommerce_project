@@ -1,0 +1,26 @@
+{% extends 'adminn/adminbase.html' %}
+ {% block content %}
+ {% include 'includes/alerts.html' %}
+  <div class="container pb-3">
+    <div class="card">
+        <div class="card-body">
+            <h2 class="pb-3">ADD PRODUCT </h2>
+            <form action="" method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+
+                {{form.as_p}}
+
+   <div class="row mb-3">
+    <label class="col-sm-2 col-form-label">Add images</label>
+    <div class="col-sm-10">
+      {{form_image.images}}
+    </div>
+  </div>
+
+
+                <button type="submit" class="btn btn-success mt-2">Save</button>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock content %}

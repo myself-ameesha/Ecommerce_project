@@ -1,0 +1,25 @@
+<style>
+
+.clr{
+    color: black;
+    font-weight:500;
+}
+
+
+</style>
+
+
+<aside class="col-md-3 pt-5">
+    <!--   SIDEBAR   -->
+    <ul class="list-group clr">
+      <a class="list-group-item {% if '/accounts/' == request.path %}{% endif %} text-dark" href="{% url 'dashboard' %}"> Dashboard </a>
+      <a class="list-group-item {% if '/my_orders/' in request.path %}{% endif %} text-dark" href="{% url 'my_orders' %}"> My Orders </a>
+      <a class="list-group-item {% if '/edit_profile/' in request.path %}{% endif %} text-dark " href="{% url 'edit_profile' %}"> Edit Profile </a>
+      <a class="list-group-item {% if '/change_password/' in request.path %}{% endif %} text-dark" href="{% url 'change_password' %}">Change Password </a>
+      <a class="list-group-item {% if '/user_wallet/' in request.path %}{% endif %} text-dark" href="{% url 'user_wallet' %}"> Wallet</a>
+    </ul>
+    <br>
+    <a class="btn btn-light btn-block" href="{% url 'logout' %}"> <i class="fa fa-power-off"></i> <span class="text">Log out</span> </a>
+    <!--   SIDEBAR .//END   -->
+  </aside>
+  

@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+<!-- ========================= SECTION CONTENT ========================= -->
+<section class="section-content padding-y bg">
+    {% include 'includes/alerts.html' %}
+    <div class="container">
+        <div class="row">
+            {% include 'includes/dashboard_sidebar.html' %}
+            <main class="col-md-9 pt-5 pb-5">
+                <article class="card">
+                    <header class="card-header text-center">
+                        <h2 class="d-inline-block mr-3 ">Add Address</h2>
+                    </header>
+                    <div class="card-body">
+                        <form method="post" enctype="multipart/form-data" class="needs-validation" novalidate>
+                            {% csrf_token %}
+                            <div class="form-group">
+                                <label for="street_address">Street Address:</label>
+                                <input type="text" id="street_address" name="street_address" class="form-control" required>
+                                <div class="invalid-feedback">Please provide a street address.</div>
+                            </div>
+                            <div class="form-group">
+                                <label for="city">City:</label>
+                                <input type="text" id="city" name="city" class="form-control" required>
+                                <div class="invalid-feedback">Please provide a city.</div>
+                            </div>
+                            <div class="form-group">
+                                <label for="state">State:</label>
+                                <input type="text" id="state" name="state" class="form-control" required>
+                                <div class="invalid-feedback">Please provide a state.</div>
+                            </div>
+                            <div class="form-group">
+                                <label for="country">Country:</label>
+                                <input type="text" id="country" name="country" class="form-control" required>
+                                <div class="invalid-feedback">Please provide a country.</div>
+                            </div>
+                            <div class="form-group">
+                                <label for="phone_number">Phone Number:</label>
+                                <input type="text" id="phone_number" name="phone_number" class="form-control" required>
+                                <div class="invalid-feedback">Please provide a phone number.</div>
+                            </div>
+                            <div class="text-center">
+                            <button type="submit" class="btn btn-primary">Add Address</button>
+                        </div>
+                        </form>
+                    </div>
+                </article>
+            </main>
+        </div>
+    </div>
+</section>
+<!-- ========================= SECTION CONTENT END// ========================= -->
+
+{% endblock content %}

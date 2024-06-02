@@ -1,0 +1,47 @@
+{% extends 'adminn/adminbase.html' %}
+{% block content %}
+{% include 'includes/alerts.html' %}
+
+<div class="container">
+    <h2>USERS TABLE</h2>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>EMAIL</th>
+                <th>FIRSTNAME</th>
+                <th>LASTNAME</th>
+                <th>USERNAME</th>
+                <th>LAST LOGIN</th>
+                <th>DATE JOINED</th>
+                <th>IS_ACTIVE</th>
+                <th>ACTIONS</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for account in accounts %}
+            <tr>
+                <td>{{ account.email }}</td>
+                <td>{{ account.first_name }}</td>
+                <td>{{ account.last_name }}</td>
+                <td>{{ account.username }}</td>
+                <td>{{ account.last_login }}</td>
+                <td>{{ account.date_joined }}</td>
+                <td> {{ account.is_active }}</td>
+                <td>
+                    <div class="btn-group" role="group">
+                        {% if account.is_active %}
+                        <a href="{% url 'adminn:block_user' account.id %}" class="btn btn-sm btn-danger" onclick="return confirm('Are you sure you want to block this user?');">Block</a>
+                       
+                        {% else %}
+                        <a href="{% url 'adminn:unblock_user' account.id %}" class="btn btn-sm btn-success" onclick="return confirm('Are you sure you want to block this user?');">UnBlock</a>
+                        {% endif %}
+                        </div>
+                    </td>
+                </tr>
+               
+                {% endfor %} 
+            </tbody>
+    </table>
+</div>
+
+{% endblock content %}

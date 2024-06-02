@@ -1,0 +1,14 @@
+{% extends 'adminn/adminbase.html' %}
+{% block content %}
+{% include 'includes/alerts.html' %}
+ <div class="container">
+    <div class="card">
+        <div class="card-body">
+            <h2>Add Coupon </h2>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-success mt-2">Save Coupon</button>
+    </form>
+
+{% endblock content %}

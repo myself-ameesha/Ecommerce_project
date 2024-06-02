@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+<!-- ========================= SECTION CONTENT ========================= -->
+<section class="section-conten padding-y bg">
+    <div class="container">
+        <div class="row">
+            {% include 'includes/dashboard_sidebar.html' %}
+            <main class="col-md-9 pt-5 pb-5">
+                <article class="card">
+                    <header class="card-header">
+                        <h3 class="text-center">Edit Profile</h3>
+                    </header>
+                    <hr>
+                    <div style="margin-left: 20px;">
+                        <form method="post" enctype="multipart/form-data">
+                            {% csrf_token %}
+                            {{ profile_form.non_field_errors }}
+                            <div class="col form-group">
+                                <label for="">First Name:</label>
+                                <input type="text" name="first_name" class="form-control" value="{{ user.first_name }}" required>
+                            </div>
+                            <div class="col form-group">
+                                <label for="">Last Name:</label>
+                                <input type="text" name="last_name" class="form-control" value="{{ user.last_name }}" required>
+                            </div>
+                            <div class="col form-group">
+                                <label for="">Email:</label>
+                                <input type="email" name="email" class="form-control" value="{{ user.email }}" required>
+                            </div>
+
+                            <div class="col form-group">
+                                <label for="">Phone Number:</label>
+                                <input type="text" name="phone_number" class="form-control" value="{{ user.phone_number }}" required>
+                            </div>
+                            <!-- Repeat the above pattern for other form fields -->
+
+                            <div class="text-center pt-3">
+                                <button type="submit" class="btn btn-primary">Update Profile</button>
+                            </div>
+                        </form>
+                    </div>
+                    <br>
+                    <br>
+                </article> <!-- order-group.// --> 
+            </main>
+        </div> <!-- row.// -->
+    </div>
+</section>
+<!-- ========================= SECTION CONTENT END// ========================= -->
+
+{% endblock content %}

@@ -1,0 +1,457 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+    <!-- Breadcrumb Begin -->
+    <div class="breadcrumb-option">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="breadcrumb__links">
+                        <a href="./index.html"><i class="fa fa-home"></i> Home</a>
+                        <a href="{% url 'store' %}">All Products</a></li>
+                        <!-- <a href="#">Women’s </a> -->
+                        <span>{{ single_product.product_name }}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Breadcrumb End -->
+
+    <!-- Product Details Section Begin -->
+    <section class="product-details spad">
+        <form action="{% url 'add_cart' single_product.id %}" method="post">
+            {%  csrf_token %}
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-6">
+                    <div class="product__details__pic">
+                        <div class="product__details__pic__left product__thumb nice-scroll">
+                            {% for image in single_product.image.all %}
+                            <a class="pt {% if forloop.first %}active{% endif %}" href="#" data-large-image="{{ image.image.url }}">
+                                <img class="small_img" src="{{ image.image.url }}" alt="">
+                            </a>
+                            {% endfor %}
+                        </div>
+                        <div class="product__details__slider__content">
+                            <div class="product__details__pic__slider owl-carousel">
+                                {% with single_image=single_product.image.first %}
+                                <div class="zoom-container">
+                                    <img class="big_img" id="zoomable-image" src="{{ single_image.image.url }}" data-zoom-image="{{ single_image.image.url }}" alt="">
+                                </div>
+                                {% endwith %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+               
+
+                <div class="col-lg-6">
+                    <div class="product__details__text">
+                        <h3>{{ single_product.product_name }} <span>{{single_product.description}}</span></h3>
+                        <p><b>Stock: </b>{% if single_product.stock >= 0 %}{{ single_product.stock }}{% else %}0{% endif %}</p>
+                        <div class="rating-star pb-3">
+                            <span>
+                                <i class="fa fa-star{% if single_product.averageReview < 0.5 %}-o{% elif single_product.averageReview >= 0.5 and single_product.averageReview < 1 %}-half-o {% endif %}" aria-hidden="true"></i>
+                                <i class="fa fa-star{% if single_product.averageReview < 1.5 %}-o{% elif single_product.averageReview >= 1.5 and single_product.averageReview < 2 %}-half-o {% endif %}" aria-hidden="true"></i>
+                                <i class="fa fa-star{% if single_product.averageReview < 2.5 %}-o{% elif single_product.averageReview >= 2.5 and single_product.averageReview < 3 %}-half-o {% endif %}" aria-hidden="true"></i>
+                                <i class="fa fa-star{% if single_product.averageReview < 3.5 %}-o{% elif single_product.averageReview >= 3.5 and single_product.averageReview < 4 %}-half-o {% endif %}" aria-hidden="true"></i>
+                                <i class="fa fa-star{% if single_product.averageReview < 4.5 %}-o{% elif single_product.averageReview >= 4.5 and single_product.averageReview < 5 %}-half-o {% endif %}" aria-hidden="true"></i>
+                                <span>{{single_product.countReview}} reviews</span>
+                                </span>
+                        </div>
+                       
+                        <div class="mb-3 product__details__price">
+                            <var class="price h4"style="font-weight: bold;font-style: normal;">{{ single_product.price_after_discount }}</var>
+                            <p>{{ single_product.discount }}% off</p> 
+
+                        </div>
+                        
+                        <div class="product__details__button">
+                            <div class="quantity">
+                                <span>Quantity:</span>
+                                <div class="pro-qty">
+                                <span class="dec qtybtn">-</span>  <input type="text" value="1"><span class="inc qtybtn">+</span>
+                                </div>
+                            </div>
+                            {% if single_product.stock <= 0 %}
+                            <h5 class="text-danger ctstock" >Out of Stock!</h5>
+
+                            {% else %}
+                            <button type="submit" class="cart-btn"><span class="icon_bag_alt"></span> Add to Cart</button>
+                            {% endif %}
+                            </form>
+                            <form action="{% url 'add_wishlist' product_slug=single_product.slug %}" method="post">
+                                {% csrf_token %}
+                                
+                                    {% if in_wishlist %}
+                                        <button type="button" class="btn btn-outline-success wshbtn mt-2 disabled">
+                                            <span class="text">Added to Wishlist</span>
+                                            <i class="fa fa-heart"></i>
+                                        </button>
+                                    {% else %}
+                                        <button type="submit" class="btn btn-outline-success wshbtn mt-2">
+                                            <span class="text">Add to Wishlist</span>
+                                            <i class="fa fa-heart"></i>
+                                        </button>
+                                    {% endif %}
+                                
+                            </form>
+
+
+                        </div>
+                        <div class="product__details__widget">
+                            <ul>
+                                <div class="row">
+                                    <div class="item-option-select">
+                                        <h6 class="pb-3">Choose Color</h6>
+                                        <select name="color" class="form-control" required>
+                                            <option  value="" disabled selected>Select</option>
+                                            {% for i in single_product.variation_set.colors %}
+                                            <option value="{{ i.variation_value | lower }}">{{ i.variation_value | capfirst }}</option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                    <div class="item-option-select pl-5">
+                                        <h6 class="pb-3">Select Size</h6>
+                                        <select  name="size" class="form-control" required>
+                                            <option  value="" disabled selected>Select</option>
+                                            {% for i in single_product.variation_set.sizes %}
+                                            <option value="{{ i.variation_value | lower }}">{{ i.variation_value | capfirst }}</option>
+                                            {% endfor %}
+                                        </select>
+    
+    
+                                    </div>
+                                </div> <!-- row.// -->
+
+                                <!-- <li>
+                                    <span>Promotions:</span>
+                                    <p>Free shipping</p>
+                                </li> -->
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <br>
+                <br>
+        <div class="row w-75">
+            <div class="col-lg-12">
+                <form action="{% url 'submit_review' single_product.id %}" method="POST">
+                {% csrf_token %}
+                <h4 style="font-weight: bold; padding-bottom: 10px; padding-top: 10px;">Write Your Reviews</h4>
+                <div>
+                 <!-- Rating stars -->
+                 <label>How do you rate this product?
+                 
+                 </label>
+                 <br>
+                 <div class="rate">
+                 <input type="radio" name="rating" id="rating10" value="5"  required /><label for="rating10" title="5" ></label>
+                 <input type="radio" name="rating" id="rating9" value="4.5"  required /><label for="rating9" title="4.5" class="half"></label>
+                 <input type="radio" name="rating" id="rating8" value="4"  required /><label for="rating8" title="4" ></label>
+                 <input type="radio" name="rating" id="rating7" value="3.5"  required /><label for="rating7" title="3.5" class="half"></label>
+                 <input type="radio" name="rating" id="rating6" value="3"  required /><label for="rating6" title="3" ></label>
+                 <input type="radio" name="rating" id="rating5" value="2.5"  required /><label for="rating5" title="2.5" class="half" ></label>
+                 <input type="radio" name="rating" id="rating4" value="2"  required /><label for="rating4" title="2" ></label>
+                 <input type="radio" name="rating" id="rating3" value="1.5"  required /><label for="rating3" title="1.5" class="half" ></label>
+                 <input type="radio" name="rating" id="rating2" value="1"  required /><label for="rating2" title="1" ></label>
+                 <input type="radio" name="rating" id="rating1" value="0.5"  required /><label for="rating1" title="0.5" class="half" ></label>
+                 </div>
+                 <br>
+                 Review Title:
+                <input type="text" class="form-control" name="subject">
+                <br>
+                Review:
+                <textarea name="review" rows="4" class="form-control"></textarea>
+                <br>
+                {% if user.is_authenticated %}
+                    {% if orderproduct %}
+                        <input type="submit" value="Submit Review" class="btn btn-danger">
+                    {% else %}
+                        <p> You must purchase this product this product to post a review. </p>
+                    {% endif %}
+                {% else %}
+                <p> You must be logged in to post the Review. <span><a href="{% url 'loginn' %}">Login now</a></span></p>
+                {% endif %}
+                <br>
+                </div>
+                {% include 'includes/alerts.html' %}
+                </form>
+                    <br>
+                </div>
+                </div>
+                <div class="col-lg-12">
+                    <header class="section-heading">
+                    <h4 style="font-weight: bold; padding-bottom: 10px;">Customer Reviews </h4>
+                    <div class="rating-star">
+                        <span>
+                            <i class="fa fa-star{% if single_product.averageReview < 0.5 %}-o{% elif single_product.averageReview >= 0.5 and single_product.averageReview < 1 %}-half-o {% endif %}" aria-hidden="true"></i>
+                            <i class="fa fa-star{% if single_product.averageReview < 1.5 %}-o{% elif single_product.averageReview >= 1.5 and single_product.averageReview < 2 %}-half-o {% endif %}" aria-hidden="true"></i>
+                            <i class="fa fa-star{% if single_product.averageReview < 2.5 %}-o{% elif single_product.averageReview >= 2.5 and single_product.averageReview < 3 %}-half-o {% endif %}" aria-hidden="true"></i>
+                            <i class="fa fa-star{% if single_product.averageReview < 3.5 %}-o{% elif single_product.averageReview >= 3.5 and single_product.averageReview < 4 %}-half-o {% endif %}" aria-hidden="true"></i>
+                            <i class="fa fa-star{% if single_product.averageReview < 4.5 %}-o{% elif single_product.averageReview >= 4.5 and single_product.averageReview < 5 %}-half-o {% endif %}" aria-hidden="true"></i>
+                    <span>{{single_product.countReview}} reviews</span>
+                            </span>
+                    </div>
+                </header>
+
+                {% for review in reviews %}
+                <article class="box mb-3">
+                    <div class="icontext w-100">
+                        <div class="text">
+                            <span class="date text-muted pb-4">{{review.updated_at}} </span>
+                            <h6 class="mb-1"> {{review.user.full_name}} </h6>
+                            <div class="rating-star">
+                            <span>
+                            <i class="fa fa-star{% if review.rating == 0.5 %}-half-o{% elif review.rating < 1 %}-o {% endif %}" aria-hidden="true"></i>
+                            <i class="fa fa-star{% if review.rating == 1.5 %}-half-o{% elif review.rating < 2 %}-o {% endif %}" aria-hidden="true"></i>
+                            <i class="fa fa-star{% if review.rating == 2.5 %}-half-o{% elif review.rating < 3 %}-o {% endif %}" aria-hidden="true"></i>
+                            <i class="fa fa-star{% if review.rating == 3.5 %}-half-o{% elif review.rating < 4 %}-o {% endif %}" aria-hidden="true"></i>
+                            <i class="fa fa-star{% if review.rating == 4.5 %}-half-o{% elif review.rating < 5 %}-o {% endif %}" aria-hidden="true"></i>
+                            </span>
+                            </div>
+
+
+                        </div>
+                    </div> <!-- icontext.// -->
+                    <div class="mt-3">
+                    <h6>{{review.subject}}</h6>
+                        <p>
+                            {{review.review}}
+                        </p>
+                    </div>
+                </article>
+                {% endfor %}
+ 
+            </div> 
+
+
+            </div>
+            <div class="row">
+                <div class="col-lg-12 text-center">
+                    <div class="related__title">
+                        <h5 class="pt-5">RELATED PRODUCTS</h5>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-4 col-sm-6">
+                    <div class="product__item">
+                        <div class="product__item__pic set-bg" data-setbg="{%static 'img/product/_Date Night Glam_.jpeg' %}">
+                            <!-- <div class="label new">New</div> -->
+                            <ul class="product__hover">
+                                <li><a href="{%static 'img/product/_Date Night Glam_.jpeg' %}" class="image-popup"><span class="arrow_expand"></span></a></li>
+                                <li><a href="#"><span class="icon_heart_alt"></span></a></li>
+                                <li><a href="#"><span class="icon_bag_alt"></span></a></li>
+                            </ul>
+                        </div>
+                        <div class="product__item__text">
+                            <h6><a href="#">Night Glam</a></h6>
+                            <div class="rating">
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                            </div>
+                            <div class="product__price">599</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-4 col-sm-6">
+                    <div class="product__item">
+                        <div class="product__item__pic set-bg" data-setbg="{%static 'img/product/9 Darling Polka Dot Summer Dresses.jpeg' %}">
+                            <div class="label new">New</div>
+                            <ul class="product__hover">
+                                <li><a href="{%static 'img/product/9 Darling Polka Dot Summer Dresses.jpeg' %}" class="image-popup"><span class="arrow_expand"></span></a></li>
+                                <li><a href="#"><span class="icon_heart_alt"></span></a></li>
+                                <li><a href="#"><span class="icon_bag_alt"></span></a></li>
+                            </ul>
+                        </div>
+                        <div class="product__item__text">
+                            <h6><a href="#">Darling</a></h6>
+                            <div class="rating">
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                            </div>
+                            <div class="product__price">1199</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-4 col-sm-6">
+                    <div class="product__item">
+                        <div class="product__item__pic set-bg" data-setbg="{%static 'img/product/Floral Print Shirred Puff Sleeve Square Collar Crop Top.jpeg' %}">
+                            <!-- <div class="label new">New</div> -->
+                            <ul class="product__hover">
+                                <li><a href="{%static 'img/product/Floral Print Shirred Puff Sleeve Square Collar Crop Top.jpeg' %}" class="image-popup"><span class="arrow_expand"></span></a></li>
+                                <li><a href="#"><span class="icon_heart_alt"></span></a></li>
+                                <li><a href="#"><span class="icon_bag_alt"></span></a></li>
+                            </ul>
+                        </div>
+                        <div class="product__item__text">
+                            <h6><a href="#">Square Fit</a></h6>
+                            <div class="rating">
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                            </div>
+                            <div class="product__price">799</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-4 col-sm-6">
+                    <div class="product__item">
+                        <div class="product__item__pic set-bg" data-setbg="{%static 'img/product/Ruffle Trim Tie Waist Balloon Sleeve Mini Dress - Army Green _ M.jpeg' %}">
+                            <div class="label new">New</div>
+                            <ul class="product__hover">
+                                <li><a href="{%static 'img/product/Ruffle Trim Tie Waist Balloon Sleeve Mini Dress - Army Green _ M.jpeg' %}" class="image-popup"><span class="arrow_expand"></span></a></li>
+                                <li><a href="#"><span class="icon_heart_alt"></span></a></li>
+                                <li><a href="#"><span class="icon_bag_alt"></span></a></li>
+                            </ul>
+                        </div>
+                        <div class="product__item__text">
+                            <h6><a href="#">Ruffle</a></h6>
+                            <div class="rating">
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                            </div>
+                            <div class="product__price">999</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+   
+    </section>
+    <!-- Product Details Section End -->
+
+
+    <!-- Footer Section Begin -->
+    <footer class="footer">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-4 col-md-6 col-sm-7">
+                    <div class="footer__about">
+                        <div class="footer__logo">
+                            <a href="./index.html"><img src="{% static 'img/logo.png' %}" alt=""></a>
+                        </div>
+                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt
+                        cilisis.</p>
+                        <div class="footer__payment">
+                            <a href="#"><img src="{% static 'img/payment/payment-1.png' %}" alt=""></a>
+                            <a href="#"><img src="{% static 'img/payment/payment-2.png' %}" alt=""></a>
+                            <a href="#"><img src="{% static 'img/payment/payment-3.png' %}" alt=""></a>
+                            <a href="#"><img src="{% static 'img/payment/payment-4.png' %}" alt=""></a>
+                            <a href="#"><img src="{% static 'img/payment/payment-5.png' %}" alt=""></a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-2 col-md-3 col-sm-5">
+                    <div class="footer__widget">
+                        <h6>Quick links</h6>
+                        <ul>
+                            <li><a href="#">About</a></li>
+                            <li><a href="#">Blogs</a></li>
+                            <li><a href="#">Contact</a></li>
+                            <li><a href="#">FAQ</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-lg-2 col-md-3 col-sm-4">
+                    <div class="footer__widget">
+                        <h6>Account</h6>
+                        <ul>
+                            <li><a href="#">My Account</a></li>
+                            <li><a href="#">Orders Tracking</a></li>
+                            <li><a href="#">Checkout</a></li>
+                            <li><a href="#">Wishlist</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-8 col-sm-8">
+                    <div class="footer__newslatter">
+                        <h6>NEWSLETTER</h6>
+                        <form action="#">
+                            <input type="text" placeholder="Email">
+                            <button type="submit" class="site-btn">Subscribe</button>
+                        </form>
+                        <div class="footer__social">
+                            <a href="#"><i class="fa fa-facebook"></i></a>
+                            <a href="#"><i class="fa fa-twitter"></i></a>
+                            <a href="#"><i class="fa fa-youtube-play"></i></a>
+                            <a href="#"><i class="fa fa-instagram"></i></a>
+                            <a href="#"><i class="fa fa-pinterest"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-12">
+                    <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+                    <div class="footer__copyright__text">
+                        <p>Copyright &copy; <script>document.write(new Date().getFullYear());</script> All rights reserved | This template is made with <i class="fa fa-heart" aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank">Colorlib</a></p>
+                    </div>
+                    <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+                </div>
+            </div>
+        </div>
+    </footer>
+    <!-- Footer Section End -->
+
+
+    <!-- Js Plugins -->
+    
+    <script src="{%static 'js/jquery-3.3.1.min.js' %}"></script>
+    <script src="{%static 'js/bootstrap.min.js' %}"></script>
+    <script src="{%static 'js/jquery.magnific-popup.min.js' %}"></script>
+    <script src="{%static 'js/jquery-ui.min.js' %}" ></script>
+    <script src="{%static 'js/mixitup.min.js' %}"></script>
+    <script src="{%static 'js/jquery.countdown.min.js' %}"></script>
+    <script src="{%static 'js/jquery.slicknav.js' %}"></script>
+    <script src="{%static 'js/owl.carousel.min.js' %}"></script>
+    <script src="{%static 'js/jquery.nicescroll.min.js' %}"></script>
+    <script src="{%static 'js/main.js' %}"></script>
+    <script src="{%static 'js/zoomsl.min.js' %}"></script>
+    <script src="{%static 'js/zoomsl.js' %}"></script>
+    <!-- Add this script tag at the end of your HTML file -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/zoom-vanilla.js/dist/zoom-vanilla.min.js"></script>
+
+    <script src='{% static "js/zoomsl.js" %}'></script>
+
+<script>
+  $(document).ready(function () {
+    $(".small_img").hover(function () {
+      $(".big_img").attr('src', $(this).attr('src'));
+    });
+  });
+
+  $(document).ready(function () {
+    $(".big_img").imagezoomsl({
+      zoomrange: [3, 3]
+    });
+  });
+
+  const thumbnails = document.querySelectorAll('.pt');
+    const largeImage = document.getElementById('zoomable-image');
+
+    thumbnails.forEach(thumbnail => {
+        thumbnail.addEventListener('click', (e) => {
+            e.preventDefault();
+            const largeImageUrl = thumbnail.dataset.largeImage;
+            largeImage.src = largeImageUrl;
+            largeImage.dataset.zoomImage = largeImageUrl;
+        });
+    });
+
+</script>
+
+{% endblock content %}

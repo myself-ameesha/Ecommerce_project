@@ -1,0 +1,26 @@
+{% extends 'adminn/adminbase.html' %}
+{% block content %}
+{% include 'includes/alerts.html' %}
+<div class="container pb-3">
+    <div class="card">
+        <div class="card-body">
+            <h2 class="text-center alert">EDIT PRODUCT</h2>
+            <form method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <div class="form-group">
+                    <label>Existing Images:</label>
+                    <div>
+                        {% for image in existing_images %}
+                            <img src="{{ image.image.url }}" alt="{{ product.product_name }}" class="img-thumbnail" style="width: 100px; height: 150px; margin: 5px;">
+                            <a href="{% url 'adminn:delete_product_image' image.id %}">Delete</a>
+                        {% endfor %}
+                    </div>
+                </div>
+                {{ image_form.as_p }}
+                <input type="submit" class="btn btn-primary" value="Save Changes">
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock content %}

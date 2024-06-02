@@ -1,0 +1,157 @@
+{% extends 'adminn/adminbase.html' %}
+
+
+{% block content %}
+{% include 'includes/alerts.html' %}
+
+<div class="container">
+    <div class="row">
+        <div class="col-12">
+            <h1 class="my-4 text-center">Sales Report</h1>
+        </div>
+    </div>
+   
+    <div class="row mb-4">
+        <div class="col-12">
+            <form method="post">
+                {% csrf_token %}
+                <div class="form-row">
+                    <div class="col">
+                        <label for="start_date">Start Date:</label>
+                        <input type="date" name="start_date" id="start_date" class="form-control" value="{{ start_date|date:'Y-m-d' }}" >
+                    </div>
+                    <div class="col">
+                        <label for="end_date">End Date:</label>
+                        <input type="date" name="end_date" id="end_date" class="form-control" value="{{ end_date|date:'Y-m-d' }}" >
+                    </div>
+                </div>
+                <div class="form-row mt-3">
+                    <div class="col">
+                        <label for="date_range">Date Range:</label>
+                        <select id="date_range" name="date_range" class="form-control">
+                            <option value="">Custom</option>
+                            <option value="1day">1 Day</option>
+                            <option value="1week">1 Week</option>
+                            <option value="1month">1 Month</option>
+                        </select>
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-primary mt-3">Generate Report</button>
+            </form>
+        </div>
+    </div>
+   
+    <div class="row">
+        <div class="col-12 col-md-4 mb-4">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title text-primary">Period</h5>
+                    <p class="card-text">{{ period }}</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-12 col-md-4 mb-4">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title text-primary">Date Range</h5>
+                    <p class="card-text">{{ start_date }} - {{ end_date }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+   
+    <div class="row">
+        <div class="col-12 col-md-3 mb-4">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title text-primary">Total Sales</h5>
+                    <p class="card-text">{{ total_sales }}</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-12 col-md-3 mb-4">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title text-primary">Discounted Total</h5>
+                    <p class="card-text">{{ total_discount }}</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-12 col-md-3 mb-4">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title text-primary">Total Coupons</h5>
+                    <p class="card-text">{{ total_coupons }}</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-12 col-md-3 mb-4">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title text-primary">Total Drop Sales</h5>
+                    <p class="card-text">{{ total_drop_sales }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+   
+    <div class="row">
+        <div class="col-12 col-md-3 mb-4">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title text-primary">Net Sales</h5>
+                    <p class="card-text">{{ net_sales }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+   
+    <div class="row">
+        <div class="col-12">
+            <h2 class="my-4">Order Details</h2>
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Order Number</th>
+                            <th>Customer</th>
+                            <th>Total Value</th>
+                            <th>Discounted Total</th>
+                            <th>Coupon</th>
+                            <th>Status</th>
+                           
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for order in orders %}
+                            <tr>
+                                <td>{{ order.order_number }}</td>
+                                <td>{{ order.user }}</td>
+                                <td>{{ order.order_total }}</td>
+                                <td>{{ order.final_total }}</td>
+                                <td>{{ order.coupon }}</td>
+                                <td>{{ order.status }}</td>
+                                
+                            </tr>
+                        {% empty %}
+                            <tr>
+                                <td colspan="7" class="text-center">No orders found for the selected period.</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+   
+    <div class="row mt-4 pb-5">
+        <div class="col">
+            <a href="{% url 'adminn:download_sales_reportpdf' %}?start_date={{ start_date|date:'Y-m-d' }}&end_date={{ end_date|date:'Y-m-d' }}" class="btn btn-primary">Download PDF</a>
+        <a href="{% url 'adminn:download_sales_reportexcel' %}?start_date={{ start_date|date:'Y-m-d' }}&end_date={{ end_date|date:'Y-m-d' }}" class="btn btn-primary">Download Excel</a>
+
+        </div>
+    </div>
+</div>
+
+
+{% endblock content %}

@@ -1,0 +1,112 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin</title>
+    <!-- Add Bootstrap CSS link -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Google Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Cookie&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&display=swap"
+    rel="stylesheet">
+
+    <!-- Css Styles -->
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}" type="text/css">
+    <link rel="stylesheet" href="{% static 'css/font-awesome.min.css' %}" type="text/css">
+    <link rel="stylesheet" href="{% static 'css/elegant-icons.css' %}" type="text/css">
+    <link rel="stylesheet" href="{% static 'css/jquery-ui.min.css' %}" type="text/css">
+    <link rel="stylesheet" href="{% static 'css/magnific-popup.css' %}" type="text/css">
+    <link rel="stylesheet" href="{% static 'css/owl.carousel.min.css' %}" type="text/css">
+    <link rel="stylesheet" href="{% static 'css/slicknav.min.css' %}" type="text/css">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}" type="text/css">
+    <style>
+        /* Add custom styles here */
+        body {
+            background-color: #f8f9fa; /* Light gray background */
+            font-family: Arial, sans-serif; /* Specify font family */
+            padding-top: 50px; /* Add space at the top */
+        }
+
+        .container {
+            max-width: 800px; /* Limit content width */
+            margin: auto; /* Center content horizontally */
+            text-align: center; /* Center text */
+        }
+
+        h1 {
+            color: #007bff; /* Blue heading */
+            margin-bottom: 30px; /* Add space below heading */
+        }
+
+        .navbar-brand {
+            font-weight: bold; /* Make navbar brand text bold */
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" href="{% url 'adminn:adminhome' %}">Admin Panel</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+      
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav mr-auto">
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'adminn:users' %}">Users</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'adminn:categorylist' %}">Categories</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'adminn:productlist' %}">Products</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'adminn:orderlist' %}">Orders</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'adminn:coupon' %}">Coupons</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'adminn:sales_report' %}">Sales Report</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'adminn:custom_admin_homepage' %}">Sales Chart</a>
+            </li>
+          </ul>
+          <form class="form-inline my-2 my-lg-0">
+            <button class="btn btn-outline-danger my-2 my-sm-0" type="submit"><a class="nav-link" href="{% url 'logout' %}">Sign Out</button></a>
+          </form>
+        </div>
+      </nav>
+      
+   <!-- Add Bootstrap JS and Popper.js scripts (order matters) -->
+   <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+   <!-- Js Plugins -->
+   <script src="{%static 'js/jquery-3.3.1.min.js' %}"></script>
+   <script src="{%static 'js/bootstrap.min.js' %}"></script>
+   <script src="{%static 'js/jquery.magnific-popup.min.js' %}"></script>
+   <script src="{%static 'js/jquery-ui.min.js' %}" ></script>
+   <script src="{%static 'js/mixitup.min.js' %}"></script>
+   <script src="{%static 'js/jquery.countdown.min.js' %}"></script>
+   <script src="{%static 'js/jquery.slicknav.js' %}"></script>
+   <script src="{%static 'js/owl.carousel.min.js' %}"></script>
+   <script src="{%static 'js/jquery.nicescroll.min.js' %}"></script>
+   <script src="{%static 'js/main.js' %}"></script>
+   <link href="{% static 'css/custom.css' %}" rel="stylesheet" type="text/css"/>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+
+
+</body>
+</html>
+
+{% block content %}
+
+{% endblock %}
+

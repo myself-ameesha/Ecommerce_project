@@ -1,0 +1,64 @@
+{% extends 'adminn/adminbase.html' %}
+{% block content %}
+{% include 'includes/alerts.html' %}
+<style>
+    form {
+        max-width: 600px;
+        margin: 0 auto;
+        padding: 20px;
+        border-radius: 5px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    form label {
+        display: block;
+        margin-bottom: 5px;
+        font-weight: bold;
+    }
+
+    form input,
+    form select {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #ced4da;
+        border-radius: 3px;
+        margin-bottom: 15px;
+    }
+
+    .row {
+        margin-bottom: 15px;
+    }
+
+    .image-input {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .image-input input[type="file"] {
+        width: 200px;
+    }
+</style>
+
+<div class="container">
+    <div class="card">
+        <div class="card-body">
+            <h2 class="pb-3">ADD CATEGORY</h2>
+            <form action="" method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+                <table>
+                    {{ form.as_table }}
+                </table>
+                <div class="row image-input">
+                    <div class="col-sm-12">
+                        {{ form_image.image }}
+                    </div>
+                </div>
+                <div class="text-center">
+                    <button type="submit" class="btn btn-success mt-2">Save</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock content %}

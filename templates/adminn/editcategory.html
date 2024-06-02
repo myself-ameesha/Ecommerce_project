@@ -1,0 +1,58 @@
+{% extends 'adminn/adminbase.html' %}
+{% block content %}
+{% include 'includes/alerts.html' %}
+<style>
+    form {
+        max-width: 600px;
+        margin: 0 auto;
+        padding: 20px;
+        border-radius: 5px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    form table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-bottom: 20px;
+    }
+
+    form table td {
+        padding: 10px;
+    }
+
+    form table th {
+        text-align: left;
+        font-weight: bold;
+    }
+
+    form input[type="submit"] {
+        background-color: #28a745;
+        color: #fff;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 3px;
+        cursor: pointer;
+        display: block;
+        margin: 0 auto;
+    }
+
+    form input[type="submit"]:hover {
+        background-color: #218838;
+    }
+</style>
+
+<div class="container">
+    <h2 class="text-center alert">EDIT CATEGORY</h2>
+    <div class="card">
+        <div class="card-body">
+            <form method="post" enctype="multipart/form-data" class="mx-auto">
+                {% csrf_token %}
+                <table>
+                    {{ form.as_table }}
+                </table>
+                <input type="submit" class="btn btn-primary" value="Save Changes">
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock content %}

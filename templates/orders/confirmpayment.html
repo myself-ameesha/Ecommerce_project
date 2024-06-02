@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+
+
+<section class="section-content padding-y bg">
+    <div class="container pt-5">
+        <div class="alert alert-success " role="alert">
+            <h4 class="alert-heading pb-5">Order Placed Successfully!</h4>
+            <p>Your order has been successfully placed. Thank you for shopping with us!</p>
+            <hr>
+            
+            <p class="mb-0">
+                <a href="{% url 'cancel_order' order_number=order.order_number %}"  class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this order?');">Cancel Order</a>
+            </p>
+
+            <div class="text-center">
+        <a href="{% url 'store' %}" class="btn btn-success">Shop more</a>
+    </div>
+        </div>
+    </div>
+</section>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+{% endblock content %}
