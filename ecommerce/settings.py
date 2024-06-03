@@ -88,10 +88,11 @@ AUTH_USER_MODEL= 'ecommerceapp.Account'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'ecommercedb',
-        'USER': 'postgres',
-        'PASSWORD': '1234',
+        'NAME': 'myprojectdb',
+        'USER': 'myprojectdbuser',
+        'PASSWORD': 'password',
         'HOST': 'localhost',
+        'PORT':'5432',
 
     }
 }
