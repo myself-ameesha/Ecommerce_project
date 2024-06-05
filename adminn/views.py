@@ -104,7 +104,7 @@ def addproduct(request):
             
             return redirect("adminn:productlist")
     # Retrieve products ordered by creation date in descending order
-    products = Product.objects.all().order_by('-created_at')
+    products = Product.objects.all().order_by('-created_date')
 
     context = {"form": productform, "form_image": imageform, "products": products}
     return render(request, "adminn/addproduct.html", context)
