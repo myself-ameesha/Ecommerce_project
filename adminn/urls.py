@@ -41,4 +41,12 @@ urlpatterns = [
 
     path('custom_admin_homepage/', views.custom_admin_homepage, name='custom_admin_homepage'),
 
+    
+    path('add_variation/', views.add_variation, name='add_variation'),
+    path('variationlist/', views.variationlist, name='variationlist'),
+
+    path('process_order/<int:order_id>/', views.process_order, name='process_order'),
+    path('ship_order/<int:order_id>/', views.ship_order, name='ship_order'),
+    path('deliver_order/<int:order_id>/', views.deliver_order, name='deliver_order'),
+
 ]
