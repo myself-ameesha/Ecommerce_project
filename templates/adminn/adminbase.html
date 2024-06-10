@@ -65,6 +65,9 @@
               <a class="nav-link" href="{% url 'adminn:productlist' %}">Products</a>
             </li>
             <li class="nav-item">
+              <a class="nav-link" href="{% url 'adminn:variationlist'  %}">Variations</a>
+            </li>
+            <li class="nav-item">
               <a class="nav-link" href="{% url 'adminn:orderlist' %}">Orders</a>
             </li>
             <li class="nav-item">
@@ -76,6 +79,8 @@
             <li class="nav-item">
               <a class="nav-link" href="{% url 'adminn:custom_admin_homepage' %}">Sales Chart</a>
             </li>
+             
+
           </ul>
           <form class="form-inline my-2 my-lg-0">
             <button class="btn btn-outline-danger my-2 my-sm-0" type="submit"><a class="nav-link" href="{% url 'logout' %}">Sign Out</button></a>
