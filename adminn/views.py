@@ -45,10 +45,7 @@ def superuser_required(view_func):
 def index(request):
     return render(request, 'index.html')
 
-
-# def adminhome(request):
-#     # Render your custom admin panel homepage template
-#     return render(request, 'adminn/adminhome.html')  
+ 
 @superuser_required
 def adminhome(request):
     products = Product.objects.all()  # Fetch all products or adjust the query as needed
@@ -265,6 +262,7 @@ def add_coupon(request):
         form = CouponForm()
     return render(request, 'adminn/add_coupon.html', {'form': form})
 
+@superuser_required
 def edit_coupon(request, coupon_id):
     coupon = get_object_or_404(Coupon, id=coupon_id)
     if request.method == "POST":
@@ -572,7 +570,7 @@ def calculate_date_range(filter_period, today):
     
     return start_date, end_date
 
-
+@superuser_required
 def add_variation(request):
     if request.method == 'POST':
         form = VariationForm(request.POST)
@@ -584,12 +582,12 @@ def add_variation(request):
         form = VariationForm()
     return render(request, 'adminn/add_variation.html', {'form': form})
 
-
+@superuser_required
 def variationlist(request):
     variations = Variation.objects.all()
     return render(request, 'adminn/variationlist.html', {'variations': variations})
 
-
+@superuser_required
 def process_order(request, order_id):
     order = get_object_or_404(Order, id=order_id)
     order.is_ordered = False
@@ -597,7 +595,7 @@ def process_order(request, order_id):
     order.save()
     messages.success(request, 'Order status has been updated to Processing.')
     return redirect('adminn:orderlist')  # Redirect to the order detail page or another appropriate page
-
+@superuser_required
 def ship_order(request, order_id):
     order = get_object_or_404(Order, id=order_id)
     order.is_ordered = False
@@ -605,7 +603,7 @@ def ship_order(request, order_id):
     order.save()
     messages.success(request, 'Order status has been updated to Shipped.')
     return redirect('adminn:orderlist')  # Redirect to the order detail page or another appropriate page
-
+@superuser_required
 def deliver_order(request, order_id):
     order = get_object_or_404(Order, id=order_id)
     order.is_ordered = False
