@@ -1,7 +1,7 @@
 {% extends 'adminn/adminbase.html' %}
 {% block content %}
 {% include 'includes/alerts.html' %}
-<h2 class="text-center pb-4">ORDERS LIST</h2>
+<h2 class="text-center pb-5 pt-5">ORDERS LIST</h2>
 
         <table class="table table-bordered">
         <thead>
@@ -33,10 +33,31 @@
 
                     <td>
                         <div class="pl-3">
-                            <form action="{% url 'cancell_order' order_number=order.order_number %}" method="post">
+                            <form action="{% url 'adminn:process_order' order.id %}" method="post">
                               {% csrf_token %}
-                              <button type="submit" class="btn btn-danger">Cancel</button>
+                              <div class="pb-2 ">
+                              <button type="submit" class="btn btn-primary w-75">Process</button>
+                            </div>
                             </form>
+                            <form action="{% url 'adminn:ship_order' order.id %}" method="post">
+                                {% csrf_token %}
+                                <div class="pb-2 ">
+                                <button type="submit" class="btn btn-success w-75">Ship</button>
+                            </div>
+                              </form>
+                              <form action="{% url 'adminn:deliver_order' order.id %}" method="post">
+                                {% csrf_token %}
+                                <div class="pb-2">
+                                <button type="submit" class="btn btn-warning w-75">Deliver</button>
+                            </div>
+                              </form>
+                              <form action="{% url 'cancel_order' order_number=order.order_number %}" method="post">
+                                {% csrf_token %}
+                                <div class="pb-2">
+                                <button type="submit" class="btn btn-danger w-75">Cancel</button>
+                            </div>
+                              </form>
+
                         </div>  
                 </td>
 
