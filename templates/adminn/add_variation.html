@@ -1,0 +1,99 @@
+{% extends 'adminn/adminbase.html' %}
+{% block content %}
+{% include 'includes/alerts.html' %}
+<style>
+    .container {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.card {
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    margin-top: 20px;
+}
+
+h2 {
+    text-align: center;
+    color: #333;
+    font-size: 24px;
+    margin-bottom: 20px;
+}
+
+.mb-3 {
+    margin-bottom: 16px;
+}
+
+.mb-3 label {
+    display: block;
+    margin-bottom: 8px;
+    color: #555;
+    font-weight: 600;
+}
+
+.mb-3 input, .mb-3 select {
+    width: 100%;
+    padding: 8px 12px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    transition: border-color 0.3s ease;
+}
+
+.mb-3 input:focus, .mb-3 select:focus {
+    border-color: #007bff;
+    outline: none;
+}
+
+.btn-primary {
+    background-color: #007bff;
+    border: none;
+    color: white;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin-top: 10px;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: background-color 0.3s ease;
+}
+
+.btn-primary:hover {
+    background-color: #0056b3;
+}
+
+.pb-4 {
+    text-align: center;
+}
+
+</style>
+  <div class="container">
+    <div class="card">
+    <h2 class="pt-4 pb-4">ADD VARIATION</h2>
+    <form method="post">
+      {% csrf_token %}
+      <div class="mb-3">
+        {{ form.product.label_tag }}<br>
+        {{ form.product }}
+      </div>
+      <div class="mb-3">
+        {{ form.variation_category.label_tag }}<br>
+        {{ form.variation_category }}
+      </div>
+      <div class="mb-3">
+        {{ form.variation_value.label_tag }}<br>
+        {{ form.variation_value }}
+      </div>
+      <div class="mb-3">
+        {{ form.is_active.label_tag }}<br>
+        {{ form.is_active }}
+      </div>
+      <button type="submit" class="btn btn-primary">Add Variation</button>
+    </form>
+</div>
+  </div>
+{% endblock %}
