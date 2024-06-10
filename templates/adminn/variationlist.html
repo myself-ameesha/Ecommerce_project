@@ -1,0 +1,34 @@
+{% extends 'adminn/adminbase.html' %}
+{% block content %}
+{% include 'includes/alerts.html' %}
+  <div class="container">
+    <h2 class="pb-4 pt-4">VARIATION LIST</h2>
+    <div class="text-right mb-3">
+        <a href="{% url 'adminn:add_variation' %}" class="btn btn-primary mb-3">ADD VARIATION</a>
+        </div>
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th>Product</th>
+          <th>Variation Category</th>
+          <th>Variation Value</th>
+          <th>Active</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for variation in variations %}
+          <tr>
+            <td>{{ variation.product }}</td>
+            <td>{{ variation.variation_category }}</td>
+            <td>{{ variation.variation_value }}</td>
+            <td>{{ variation.is_active|yesno:"Yes,No" }}</td>
+          </tr>
+        {% empty %}
+          <tr>
+            <td colspan="4">No variations found.</td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+{% endblock %}
