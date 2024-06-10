@@ -6,8 +6,8 @@ from django.contrib import messages
 from ecommerceapp.models import Account
 from django.forms import modelformset_factory
 from django.shortcuts import get_object_or_404
-from .forms import ProductForm, ProductImageForm , CouponForm
-from store.models import Product, ProductImage
+from .forms import ProductForm, ProductImageForm , CouponForm , VariationForm
+from store.models import Product, ProductImage , Variation
 from .forms import CategoryForm
 from category.models import category
 from orders.models import Order, OrderProduct , Coupon , Payment
@@ -45,10 +45,15 @@ def superuser_required(view_func):
 def index(request):
     return render(request, 'index.html')
 
+
+# def adminhome(request):
+#     # Render your custom admin panel homepage template
+#     return render(request, 'adminn/adminhome.html')  
 @superuser_required
 def adminhome(request):
-    # Render your custom admin panel homepage template
-    return render(request, 'adminn/adminhome.html')  
+    products = Product.objects.all()  # Fetch all products or adjust the query as needed
+    return render(request, 'adminn/adminhome.html', {'products': products})
+
 
 @superuser_required
 def users(request):
@@ -104,7 +109,7 @@ def addproduct(request):
             
             return redirect("adminn:productlist")
     # Retrieve products ordered by creation date in descending order
-    products = Product.objects.all().order_by('created_date')
+    products = Product.objects.all().order_by('-created_date')
 
     context = {"form": productform, "form_image": imageform, "products": products}
     return render(request, "adminn/addproduct.html", context)
@@ -197,7 +202,7 @@ def deletecategory(request, category_id):
 
 @superuser_required
 def orderlist(request):
-    orders = Order.objects.all()
+    orders = Order.objects.all().order_by('id')
     return render(request, 'adminn/orderlist.html', {'orders': orders})
 
 @superuser_required
@@ -566,3 +571,55 @@ def calculate_date_range(filter_period, today):
         raise ValueError("Invalid filter period")
     
     return start_date, end_date
+
+
+def add_variation(request):
+    if request.method == 'POST':
+        form = VariationForm(request.POST)
+        if form.is_valid():
+            variation = form.save(commit=False)
+            variation.save()
+            return redirect('adminn:variationlist')  # Redirect to the variation list page
+    else:
+        form = VariationForm()
+    return render(request, 'adminn/add_variation.html', {'form': form})
+
+
+def variationlist(request):
+    variations = Variation.objects.all()
+    return render(request, 'adminn/variationlist.html', {'variations': variations})
+
+
+def process_order(request, order_id):
+    order = get_object_or_404(Order, id=order_id)
+    order.is_ordered = False
+    order.status = 'processing'
+    order.save()
+    messages.success(request, 'Order status has been updated to Processing.')
+    return redirect('adminn:orderlist')  # Redirect to the order detail page or another appropriate page
+
+def ship_order(request, order_id):
+    order = get_object_or_404(Order, id=order_id)
+    order.is_ordered = False
+    order.status = 'Shipped'
+    order.save()
+    messages.success(request, 'Order status has been updated to Shipped.')
+    return redirect('adminn:orderlist')  # Redirect to the order detail page or another appropriate page
+
+def deliver_order(request, order_id):
+    order = get_object_or_404(Order, id=order_id)
+    order.is_ordered = False
+    order.status = 'Delivered'
+    order.save()
+    messages.success(request, 'Order status has been updated to Delivered.')
+    return redirect('adminn:orderlist')  # Redirect to the order detail page or another appropriate page
+
+
+
+
+
+
+
+
+
+
