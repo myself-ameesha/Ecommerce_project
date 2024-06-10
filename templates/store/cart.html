@@ -229,4 +229,57 @@
     <script src="{%static 'js/main.js' %}"></script>
 
 
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script>
+$(document).ready(function(){
+    $('.btn-increase').click(function(){
+        var productId = $(this).data('product-id');
+        var cartItemId = $(this).data('cart-item-id');
+        $.ajax({
+            url: '/cart/add/' + productId + '/',
+            type: 'POST',
+            data: {
+                'csrfmiddlewaretoken': '{{ csrf_token }}',
+            },
+            success: function(response){
+                location.reload(); // Reload the page to reflect changes
+            }
+        });
+    });
+
+    $('.btn-decrease').click(function(){
+        var productId = $(this).data('product-id');
+        var cartItemId = $(this).data('cart-item-id');
+        $.ajax({
+            url: '/cart/remove/' + productId + '/' + cartItemId + '/',
+            type: 'POST',
+            data: {
+                'csrfmiddlewaretoken': '{{ csrf_token }}',
+            },
+            success: function(response){
+                location.reload(); // Reload the page to reflect changes
+            }
+        });
+    });
+
+    $('.btn-remove').click(function(){
+        var productId = $(this).data('product-id');
+        var cartItemId = $(this).data('cart-item-id');
+        $.ajax({
+            url: '/cart/remove_item/' + productId + '/' + cartItemId + '/',
+            type: 'POST',
+            data: {
+                'csrfmiddlewaretoken': '{{ csrf_token }}',
+            },
+            success: function(response){
+                location.reload(); // Reload the page to reflect changes
+            }
+        });
+    });
+});
+</script>
+
+
 {% endblock %}
