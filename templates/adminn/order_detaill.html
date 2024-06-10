@@ -19,7 +19,7 @@
                                 <ul class="list-unstyled text-right">
                                     <li><strong>Invoiced To</strong></li>
                                     <li>{{ order.full_name }}</li>
-                                    <li>{{ order.full_address }}</li>
+                                    <li>{{ order.street_address }}</li>
                                     <li>{{ order.city }}</li>
                                     <li>{{ order.country }}</li>
                                 </ul>
@@ -31,8 +31,8 @@
                             <div class="invoice-details mt25">
                                 <div class="well">
                                     <ul class="list-unstyled mb0">
-                                        <li><strong>Order</strong> #{{ order.order_number }}</li>
-                                        <li><strong>Status</strong> {{ order.status }}</li>
+                                        <li><strong>Order:</strong> #{{ order.order_number }}</li>
+                                        <li><strong>Status:</strong> {{ order.status }}</li>
                                         <li><strong>Order Date: </strong>{{ order.created_at }}</li>
                                         {% if payment.payment_method == 'PayPal' %}
                                         <li><strong>Payment: </strong>Paypal</li>
