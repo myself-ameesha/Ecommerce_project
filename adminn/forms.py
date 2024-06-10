@@ -1,7 +1,7 @@
 # forms.py
 
 from django import forms
-from store.models import Product, ProductImage
+from store.models import Product, ProductImage , Variation, VariationManager
 from django.forms import modelformset_factory
 from category.models import category
 from orders.models import Coupon
@@ -76,3 +76,39 @@ class CouponForm(forms.ModelForm):
             'valid_from': forms.DateTimeInput(attrs={'type': 'datetime-local' , 'class': 'form-control'}),
             'valid_to': forms.DateTimeInput(attrs={'type': 'datetime-local' , 'class': 'form-control'}),
         }
+
+
+variation_category_choice = (
+    ('color', 'Color'),
+    ('size', 'Size'),
+)
+
+
+class VariationForm(forms.ModelForm):
+    product = forms.ModelChoiceField(
+        queryset=Product.objects.all(),
+        widget=forms.Select(attrs={'class': 'form-select'})
+    )
+    variation_category = forms.ChoiceField(
+        choices=variation_category_choice,
+        widget=forms.Select(attrs={'class': 'form-select'})
+    )
+    variation_value = forms.CharField(
+        widget=forms.TextInput(attrs={'class': 'form-control'})
+    )
+    is_active = forms.BooleanField(
+        initial=True,
+        widget=forms.CheckboxInput(attrs={'class': 'form-check-input'})
+    )
+
+
+    class Meta:
+        model = Variation
+        fields = ['product', 'variation_category', 'variation_value', 'is_active']
+        widgets = {
+            'created_at': forms.DateTimeInput(attrs={'type': 'hidden'}),
+        }
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['variation_value'].widget.attrs.update({'class': 'form-control'})
