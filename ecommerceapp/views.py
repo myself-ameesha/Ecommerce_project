@@ -183,7 +183,6 @@ def activate(request, uidb64, token):
         messages.error(request, 'Invalid activation link')
         return redirect('register')
    
-@login_required(login_url = 'loginn')
 def forgotpassword(request):
     if request.method == "POST":
         email = request.POST['email']
