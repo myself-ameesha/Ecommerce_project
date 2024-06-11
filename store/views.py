@@ -9,31 +9,51 @@ from django.db.models import Q
 from django.contrib.auth.decorators import login_required
 from orders.models import OrderProduct
 from .forms import ReviewForm
+from django.shortcuts import render, get_object_or_404
+from django.core.paginator import Paginator
+from django.db.models import Q
+from .models import Product, category, Variation
 
 
-# Create your views here.
+
 def store(request, category_slug=None):
-    categories=None
-    products=None
+    categories = None
+    products = Product.objects.filter(is_available=True).distinct()
 
-    if  category_slug != None:
-        categories= get_object_or_404 (category,slug = category_slug)
-        products =Product.objects.filter(category=categories,is_available=True)
-        paginator = Paginator(products, 2)
-        page = request.GET.get('page')
-        paged_products = paginator.get_page(page)
-        product_count=products.count()
-    else:
-        products = Product.objects.all().filter(is_available=True).order_by('id')
-        paginator = Paginator(products, 6)
-        page = request.GET.get('page')
-        paged_products = paginator.get_page(page)
-        product_count = products.count()
-    context={
-        'products':paged_products,
-        'product_count':product_count,
-        }
-    return render(request, 'store/store.html',context)
+    # Get unique sizes and colors from variations
+    sizes = Variation.objects.filter(variation_category='size').values_list('variation_value', flat=True).distinct()
+    colors = Variation.objects.filter(variation_category='color').values_list('variation_value', flat=True).distinct()
+
+    selected_size = request.GET.get('size')
+    selected_color = request.GET.get('color')
+
+    # Apply filters
+    if selected_size:
+        products = products.filter(variation__variation_category='size', variation__variation_value=selected_size)
+    if selected_color:
+        products = products.filter(variation__variation_category='color', variation__variation_value=selected_color)
+
+    if category_slug:
+        categories = get_object_or_404(category, slug=category_slug)
+        products = products.filter(category=categories)
+
+    products = products.distinct()
+
+    paginator = Paginator(products, 6)
+    page = request.GET.get('page')
+    paged_products = paginator.get_page(page)
+    product_count = products.count()
+
+    context = {
+        'products': paged_products,
+        'product_count': product_count,
+        'sizes': sizes,
+        'colors': colors,
+        'selected_size': selected_size,
+        'selected_color': selected_color,
+    }
+    return render(request, 'store/store.html', context)
+
 
 
 def product_details(request, category_slug, product_slug):
@@ -42,7 +62,6 @@ def product_details(request, category_slug, product_slug):
 
     # Check if the product is in the cart
     in_cart = CartItem.objects.filter(cart__cart_id=_cart_id(request), product=single_product).exists()
-
     
 
     if request.user.is_authenticated:  # Check if the user is authenticated
