@@ -210,9 +210,33 @@
                     </div>
                 </div>
                 <div class="col-lg-9 col-md-9">
+                    <form method="GET" class="form-inline pb-5">
+                        <div class="form-group">
+                            <label class="pr-2" for="size">Size:</label>
+                            <select name="size" id="size" class="form-control">
+                                <option value="">All Sizes</option>
+                                {% for size in sizes %}
+                                    <option value="{{ size }}" {% if size == selected_size %}selected{% endif %}>{{ size }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="pl-3 pr-2"for="color">Color:</label>
+                            <select name="color" id="color" class="form-control">
+                                <option value="">All Colors</option>
+                                {% for color in colors %}
+                                    <option value="{{ color }}" {% if color == selected_color %}selected{% endif %}>{{ color }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="pl-2">
+                        <button type="submit" class="btn btn-danger">Filter</button>
+                    </div>
+                    </form>
                     <div class="form-inline">
                         <span class="mr-md-auto mb-4"><b>{{ product_count }}</b>  items found</span>
                     </div>
+                   
                     <div class="row">
                         {% if products %}
                         {% for product in products %}
