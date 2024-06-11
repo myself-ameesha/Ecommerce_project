@@ -210,7 +210,7 @@ def forgotpassword(request):
             return redirect('forgotpassword')
     return render(request,'ecommerceapp/forgotpassword.html')
 
-@login_required(login_url = 'loginn')
+
 def resetpassword_validate(request, uidb64, token):
     try:
         uid = urlsafe_base64_decode(uidb64).decode()
@@ -226,7 +226,7 @@ def resetpassword_validate(request, uidb64, token):
         messages.error(request, "This link has been expired!")
         return redirect('loginn')
 
-@login_required(login_url = 'loginn')
+
 def resetpassword(request):
     if request.method == "POST":
         password = request.POST['password']
